@@ -1,0 +1,53 @@
+{
+  "literature": {
+    "sheet": "Sheet1",
+    "header_row_index": 1,
+    "data_start_row_index": 2,
+    "columns": {
+      "study_id": "论文序号",
+      "sample_id": "样品名称",
+      "effective_mgo": "有效MgO含量(kg/m3)",
+      "effective_sio2": "有效SiO2含量(kg/m3)",
+      "coarse_aggregate": "Coarse aggregate (kg/m³)",
+      "fine_aggregate": "Fine aggregate (kg/m³)",
+      "water": "Water (kg/m3)",
+      "shmp": "SHMP/NaHMP (kg/m3)",
+      "pce": "PCE (kg/m3)",
+      "dkp": "DKP (kg/m³)",
+      "temperature": "Curing temperature (℃)",
+      "humidity": "Curing humidity (%)",
+      "co2": "CO₂ concentration (%)"
+    },
+    "allowed_admixtures": ["SHMP/NaHMP (kg/m3)"],
+    "exclude_if_aggregate_positive": true,
+    "exclude_other_admixtures": true
+  },
+  "experiment": {
+    "main_sheet": "Sheet1",
+    "third_round_28d_sheet": "第三轮实验结果",
+    "round4_only": true,
+    "required_round_label": "第四轮",
+    "expected_round4_mix_count": 33,
+    "required_round4_ages_days": [3, 7, 28],
+    "require_complete_age_coverage": true,
+    "expected_records_per_age": 33,
+    "expected_total_round4_long_records": 99
+  },
+  "co2": {"nr_default_percent": 0.04},
+  "similarity": {
+    "input_features": [
+      "Mg_Si_ratio",
+      "water_binder_ratio",
+      "allowed_admixture_pct",
+      "curing_temperature",
+      "curing_humidity",
+      "CO2"
+    ],
+    "primary_geometry_features": ["Mg_Si_ratio", "water_binder_ratio"],
+    "primary_geometry_weight": 0.8,
+    "input_domain_neighbors": 5,
+    "optional_missing_penalty": 0.15,
+    "study_balance_weight_exponent": 0.5,
+    "hard_similarity_fraction": 0.4
+  }
+}

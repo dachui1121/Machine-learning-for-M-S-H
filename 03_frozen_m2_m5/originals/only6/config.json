@@ -1,0 +1,530 @@
+{
+  "literature": {
+    "sheet": "Sheet1",
+    "range": "A1:CC472",
+    "header_row_index": 1,
+    "data_start_row_index": 2,
+    "columns": {
+      "study_id": "论文序号",
+      "sample_id": "样品名称",
+      "effective_mgo": "有效MgO含量(kg/m3)",
+      "effective_sio2": "有效SiO2含量(kg/m3)",
+      "coarse_aggregate": "Coarse aggregate (kg/m³)",
+      "fine_aggregate": "Fine aggregate (kg/m³)",
+      "water": "Water (kg/m3)",
+      "shmp": "SHMP/NaHMP (kg/m3)",
+      "pce": "PCE (kg/m3)",
+      "dkp": "DKP (kg/m³)",
+      "temperature": "Curing temperature (℃)",
+      "humidity": "Curing humidity (%)",
+      "co2": "CO₂ concentration (%)"
+    },
+    "strength_column_regex": "^(\\d+) d strength \\(MPa\\)$",
+    "exclude_if_aggregate_positive": true,
+    "co2_nr_default": 0.04,
+    "allowed_admixtures": [
+      "SHMP/NaHMP (kg/m3)"
+    ],
+    "flag_other_admixtures": true,
+    "exclude_other_admixtures": true
+  },
+  "experiment": {
+    "main_sheet": "Sheet1",
+    "main_range": "A1:W82",
+    "third_round_28d_sheet": "第三轮实验结果",
+    "third_round_28d_range": "A1:P15",
+    "sp_is_pce": false,
+    "effective_mgo_factor": 1.0,
+    "effective_sio2_factor": 1.0,
+    "default_shmp": 0.0,
+    "default_dkp": 0.0,
+    "round4_only": true,
+    "required_round_label": "第四轮",
+    "expected_round4_mix_count": 33,
+    "required_round4_ages_days": [
+      3,
+      7,
+      28
+    ],
+    "require_complete_age_coverage": true,
+    "expected_records_per_age": 33,
+    "expected_total_round4_long_records": 99
+  },
+  "column_mapping": {
+    "experiment_MgO_to": "effective_MgO",
+    "experiment_SF_to": "effective_SiO2",
+    "experiment_SP_to": "SHMP",
+    "experiment_PCE_default": 0,
+    "experiment_DKP_default": 0,
+    "legacy_effective_MgO_factor": {
+      "value": 1.0,
+      "current_mapping_uses_factor": false
+    },
+    "legacy_effective_SiO2_factor": {
+      "value": 1.0,
+      "current_mapping_uses_factor": false
+    }
+  },
+  "age_handling": {
+    "retain_all_valid_ages": true,
+    "age_as_continuous_feature": true,
+    "target_calibrator_age_as_categorical": true,
+    "target_calibrator_continuous_age_removed": true
+  },
+  "co2": {
+    "nr_default_percent": 0.04
+  },
+  "similarity_fraction_candidates": [
+    0.2,
+    0.4,
+    0.6,
+    0.8,
+    1.0
+  ],
+  "similarity": {
+    "lambda_domain": 1.0,
+    "input_similarity_weight_exponent": 1.0,
+    "data_quality_weight_exponent": 1.0,
+    "selection_modes": [
+      "input_geometry_full_soft_weighting"
+    ],
+    "input_domain_neighbors": 5,
+    "optional_missing_penalty": 0.15,
+    "study_balance_weight_exponent": 0.5,
+    "input_only_screening": true,
+    "input_features": [
+      "Mg_Si_ratio",
+      "water_binder_ratio",
+      "allowed_admixture_pct",
+      "curing_temperature",
+      "curing_humidity",
+      "CO2"
+    ],
+    "primary_geometry_features": [
+      "Mg_Si_ratio",
+      "water_binder_ratio"
+    ],
+    "primary_geometry_weight": 0.8,
+    "fraction_geometry_objective_weights": {
+      "mean_coverage": 0.45,
+      "covering_radius": 0.35,
+      "purity": 0.2
+    },
+    "fraction_objective_tolerance": 0.02,
+    "hard_fraction_screening_enabled": false,
+    "similarity_weight_min": 0.0,
+    "similarity_weight_max": 2.0,
+    "similarity_weight_mapping": "rank_linear"
+  },
+  "validation": {
+    "group_key": "experiment_mix_id",
+    "strategy": "round4_fixed_geometric_feedback_curve",
+    "pilot_budgets": [
+      3,
+      5,
+      7,
+      9,
+      11,
+      13
+    ],
+    "pilot_design_features": [
+      "water_binder_ratio",
+      "Mg_Si_ratio"
+    ],
+    "pilot_primary_age_days": [
+      7,
+      28
+    ],
+    "pilot_secondary_ages_use_available_only": true,
+    "strict_cv": true,
+    "fixed_experiment_weights": [
+      1,
+      10,
+      50
+    ],
+    "enable_expensive_m0_tuned": false,
+    "common_holdout_definition": "all_round4_mixes_not_in_fixed_13_point_geometric_design",
+    "geometric_seed_rank_sequence": [
+      1,
+      17,
+      33,
+      11,
+      23,
+      4,
+      30,
+      8,
+      26
+    ],
+    "geometric_pair_completion_budgets": [
+      11,
+      13
+    ],
+    "strength_driven_acquisition": false,
+    "fixed_literature_pool_across_budgets": true,
+    "model_selection_uses_common_holdout": false,
+    "all_models_independent_ssa": true,
+    "primary_reported_age_days": [
+      7,
+      28
+    ],
+    "three_day_is_secondary_due_to_incomplete_round4_coverage": false,
+    "light_budget_stage": [
+      3,
+      5,
+      7
+    ],
+    "focused_deep_budgets": [
+      9,
+      11,
+      13
+    ],
+    "adaptive_blend_alpha_grid": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+    ],
+    "adaptive_blend_age_specific": true,
+    "primary_selection_method": "M6_source_pred_target_calibrator_SSA",
+    "report_secondary_method": "M5_unweighted_source_pred_target_calibrator_SSA",
+    "round4_only_experiment_training": true,
+    "common_holdout_expected_mix_count": 20,
+    "reported_age_days": [
+      3,
+      7,
+      28
+    ],
+    "operating_point_budget": 9,
+    "operating_point_holdout_expected_mix_count": 24,
+    "strict_common_holdout_expected_mix_count": 20,
+    "primary_budget_role": "preconfigured_operating_point_for_main_text",
+    "budget_curve_role": "discussion_or_supplementary_sensitivity",
+    "operating_point_definition": "first 9 mixes of the fixed 13-point geometry-only nested sequence",
+    "operating_point_holdout_definition": "all Round-4 mixes not used by the selected 9-mix operating-point model",
+    "strict_common_holdout_definition": "all Round-4 mixes outside the full fixed 13-point sensitivity envelope",
+    "final_label_claim": "24-mixture panel is unseen by the selected 9-mix model; the 20-mixture strict common holdout is untouched by every 3/5/7/9/11/13 sensitivity model",
+    "model_selection_uses_operating_point_holdout": false,
+    "m4_target_weight_max": 50.0
+  },
+  "modeling_engine": {
+    "use_ssa_mix_design_skill": true,
+    "allow_temporary_ridge_as_final": false,
+    "ssa_grouped_interface": "vendor/ssa-mix-design/scripts/grouped_model_selection.py",
+    "ssa_candidates": [
+      "Ridge",
+      "SVR",
+      "RandomForest",
+      "ExtraTrees",
+      "XGBoost"
+    ],
+    "ssa_profiles": {
+      "daily": [
+        4,
+        2
+      ],
+      "validation": [
+        6,
+        4
+      ],
+      "publication": [
+        8,
+        6
+      ]
+    },
+    "selection_metric": "pooled_unique_target_OOF_RMSE; pooled_R2_MAE_MAPE reported; common holdout never used for model selection",
+    "target_validation_protocol": "GroupKFold_on_released_experiment_mix_id; source rows train-only in every fold",
+    "cross_M_model_reuse": false,
+    "same_M_unchanged_source_stage_may_be_reused_across_budgets": true,
+    "source_ssa_candidates": [
+      "Ridge",
+      "SVR",
+      "RandomForest",
+      "ExtraTrees",
+      "XGBoost"
+    ],
+    "target_ssa_candidates": [
+      "Ridge",
+      "Huber",
+      "SVR",
+      "RandomForest",
+      "ExtraTrees",
+      "XGBoost"
+    ],
+    "light_budget_candidates": [
+      "Ridge",
+      "Huber",
+      "SVR",
+      "ExtraTrees"
+    ],
+    "focused_budget_candidates": [
+      "Ridge",
+      "Huber",
+      "SVR",
+      "RandomForest",
+      "ExtraTrees",
+      "XGBoost"
+    ],
+    "v5_budget_profiles": {
+      "diagnostic": {
+        "light": [
+          1,
+          1
+        ],
+        "focused": [
+          2,
+          1
+        ]
+      },
+      "daily": {
+        "light": [
+          2,
+          1
+        ],
+        "focused": [
+          4,
+          2
+        ]
+      },
+      "validation": {
+        "light": [
+          3,
+          1
+        ],
+        "focused": [
+          6,
+          4
+        ]
+      },
+      "publication": {
+        "light": [
+          4,
+          2
+        ],
+        "focused": [
+          8,
+          6
+        ]
+      }
+    },
+    "target_calibrator_features": {
+      "compact_physics": [
+        "Mg_Si_ratio",
+        "water_binder_ratio",
+        "effective_MgO",
+        "effective_SiO2",
+        "water",
+        "SHMP",
+        "allowed_admixture_pct",
+        "curing_temperature",
+        "curing_humidity",
+        "CO2",
+        "age_3d",
+        "age_7d",
+        "age_28d",
+        "Mg_Si_ratio_sq",
+        "water_binder_ratio_sq",
+        "MgSi_x_wb"
+      ],
+      "with_source_pred_extra": [
+        "source_pred",
+        "source_pred_x_age3",
+        "source_pred_x_age7",
+        "source_pred_x_age28",
+        "MgSi_x_age3",
+        "MgSi_x_age7",
+        "MgSi_x_age28",
+        "wb_x_age3",
+        "wb_x_age7",
+        "wb_x_age28"
+      ]
+    }
+  },
+  "residual_models": [
+    "LinearRegression",
+    "Ridge",
+    "ElasticNet",
+    "SVR",
+    "RandomForestShallow",
+    "ExtraTreesShallow",
+    "XGBoostShallow"
+  ],
+  "analysis": {
+    "target_ages": [
+      3,
+      7,
+      28
+    ],
+    "all_age_features": [
+      "effective_MgO",
+      "effective_SiO2",
+      "water",
+      "SHMP",
+      "PCE",
+      "DKP",
+      "curing_age",
+      "curing_temperature",
+      "curing_humidity",
+      "CO2",
+      "Mg_Si_ratio",
+      "water_binder_ratio",
+      "allowed_admixture_pct"
+    ],
+    "features": [
+      "effective_mgo",
+      "effective_sio2",
+      "water",
+      "shmp",
+      "pce",
+      "dkp",
+      "age_days",
+      "curing_temperature",
+      "curing_humidity",
+      "co2_concentration",
+      "mg_si_molar_ratio",
+      "water_binder_ratio",
+      "allowed_admixture_pct"
+    ],
+    "partial_correlation_controls": [
+      "age_days",
+      "water_binder_ratio"
+    ],
+    "similarity_fraction": 0.4,
+    "candidate_similarity_fractions": [
+      0.2,
+      0.4,
+      0.6,
+      0.8
+    ],
+    "jsd_bins": 10,
+    "fixed_experiment_sample_weight": 20.0,
+    "random_seed": 42,
+    "outer_cv_folds": 5,
+    "fast": {
+      "bootstrap_repeats": 50,
+      "random_subset_repeats": 1,
+      "learning_curve_repeats": 1,
+      "learning_curve_sizes": [
+        20,
+        40,
+        60,
+        80,
+        95,
+        114
+      ]
+    },
+    "publication": {
+      "bootstrap_repeats": 500,
+      "random_subset_repeats": 30,
+      "learning_curve_repeats": 20,
+      "learning_curve_sizes": [
+        20,
+        40,
+        60,
+        80,
+        95,
+        114
+      ]
+    }
+  },
+  "models": {
+    "base_model": "xgboost",
+    "residual_model": "ridge",
+    "xgboost": {
+      "n_estimators": 300,
+      "max_depth": 3,
+      "learning_rate": 0.03,
+      "subsample": 0.85,
+      "colsample_bytree": 0.85,
+      "reg_lambda": 5.0,
+      "min_child_weight": 3.0
+    },
+    "formal_methods": {
+      "M1": "unchanged old M1 raw literature only",
+      "M2": "unchanged old M2 similarity weighted literature only",
+      "M3": "unchanged old M3 equal weight direct literature and released experiment merge",
+      "M4": "unchanged old M0 experiment-only compact categorical age target SSA",
+      "M5": "NEW strict ablation: unweighted literature source + IDENTICAL M6 source_pred target calibrator; same target random seed, candidate features and evaluation protocol",
+      "M6": "unchanged old M6 similarity-weighted source + source_pred-assisted target calibrator"
+    }
+  },
+  "hyperparameter_optimization": {
+    "supported_backends": [
+      "SSA",
+      "TPE",
+      "Bayesian-GP-EI"
+    ],
+    "primary_selection_metric": "pooled_grouped_OOF_RMSE",
+    "common_holdout_used_for_search": false,
+    "focused_budget": 9,
+    "fair_evaluations_per_model_family": 24,
+    "stage1_candidate_families": [
+      "SVR",
+      "ExtraTrees",
+      "XGBoost"
+    ],
+    "bayesian_fixed_family_comparison": {
+      "M6_source": "XGBoost",
+      "M6_target": "SVR",
+      "M0": "XGBoost"
+    }
+  },
+  "literature_internal_validation": {
+    "enabled": true,
+    "train_fraction": 0.7,
+    "validation_fraction": 0.15,
+    "test_fraction": 0.15,
+    "random_seed": 111,
+    "group_column": "study_id",
+    "test_used_for_model_selection": false,
+    "uses_external_experiment_data": false
+  },
+  "story_protocol": {
+    "version": "7.1",
+    "primary_story": [
+      "M1_literature_internal_validation_stage",
+      "M1_raw_literature_prediction_on_9_real_experiments",
+      "input_distribution_difference_using_all33_real_experiment_X",
+      "M2_similarity_weighted_literature_only_prediction_on_same_9_real_experiments",
+      "M3_to_M8_few_shot_adaptation_using_9_real_experiment_labels",
+      "operating_point_evaluation_on_remaining24",
+      "strict_common_holdout_audit_on20_for_supplementary_budget_sensitivity"
+    ],
+    "target_X_scope": "all_33_round4_mixes",
+    "target_X_may_inform_similarity": true,
+    "target_y_for_primary_adaptation": "first_9_geometry_ranked_mixes",
+    "operating_point_budget": 9,
+    "supplementary_feedback_budgets": [
+      3,
+      5,
+      7,
+      9,
+      11,
+      13
+    ],
+    "literature_selection_type": "soft_weighting_not_hard_screening",
+    "similarity_weight_range": [
+      0.0,
+      2.0
+    ],
+    "strict_holdout_note": "The 24-mix operating-point evaluation contains four mixes later used only by the 11/13 supplementary sensitivity models. Therefore only the 20 mixes outside the full 13-point envelope are strict untouched holdout across all sensitivity analyses.",
+    "m2_definition": "independent SSA on all physically eligible literature using fixed 0-2 real-experiment-input similarity weights only; no real-experiment strength labels",
+    "m2_uses_experiment_strength": false
+  }
+}
